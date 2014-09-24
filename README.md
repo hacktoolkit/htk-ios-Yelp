@@ -9,7 +9,7 @@ This is a basic Yelp client.
 
 Here's an animated GIF (made with [LiceCAP](http://www.cockos.com/licecap/)) of what it looks like:
 
-![](https://raw.githubusercontent.com/hacktoolkit/htk-ios-RottenTomatoes/master/yelp_screencap_jontsai_20140923.gif)
+![](https://raw.githubusercontent.com/hacktoolkit/htk-ios-Yelp/master/yelp_screencap_jontsai_20140923.gif)
 
 ## Download and Build Instructions
 
@@ -32,7 +32,7 @@ Here's an animated GIF (made with [LiceCAP](http://www.cockos.com/licecap/)) of 
 
 Time spent: 7 hours
 
-'''Search results page'''
+**Search results page**
 
 * Table rows should be dynamic height according to the content height (in progress)
 * Custom cells should have the proper Auto Layout constraints (partially done)
@@ -40,7 +40,7 @@ Time spent: 7 hours
 * Optional: infinite scroll for restaurant results (not done)
 * Optional: Implement map view of restaurant results (not done)
 
-'''Filter page''' (Not implemented)
+**Filter page** (Not implemented)
 
 * (Unfortunately, not all the filters are supported in the Yelp API)
 * The filters you should actually have are: category, sort (best match, distance, highest rated), radius (meters), deals (on/off). (not done)
@@ -50,6 +50,6 @@ Time spent: 7 hours
 * Categories should show a subset of the full list with a "See All" row to expand. Category list is here: http://www.yelp.com/developers/documentation/category_list (Links to an external site.)
 * Clicking on the "Search" button should dismiss the filters page and trigger the search w/ the new filter settings.
 
-'''Restaurant detail page'''
+**Restaurant detail page**
 
 * Not implemented
