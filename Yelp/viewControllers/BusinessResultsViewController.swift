@@ -20,6 +20,7 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.delegate = self
         self.tableView.dataSource = self
+//        self.tableView.rowHeight = UITableViewAutomaticDimension
 
         self.searchDisplayController?.displaysSearchBarInNavigationBar = true
         searchTermDidChange()
