@@ -33,6 +33,7 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         var businessResultCell = tableView.dequeueReusableCellWithIdentifier("BusinessResultCell") as BusinessResultCell
         let business = businesses[indexPath.row]
+        businessResultCell.resultNum = indexPath.row + 1
         businessResultCell.business = business
         return businessResultCell
     }
@@ -54,7 +55,6 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
             (businesses: [YelpBusinessResult]!, error: NSError!) -> Void in
             if businesses != nil {
                 self.businesses = businesses
-                println(businesses)
                 self.tableView.reloadData()
             }
             if error != nil {

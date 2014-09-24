@@ -24,6 +24,10 @@ class YelpBusinessResult {
 //    // urls
 //    var url: String
 //    var mobileUrl: String
+
+    var categories: [YelpCategory]!
+    var rating: Int!
+    var reviewCount: Int!
     
     init(businessDict: NSDictionary) {
         self.businessDict = businessDict
@@ -43,6 +47,24 @@ class YelpBusinessResult {
 //        // urls
 //        self.url = businessDict["url"] as String
 //        self.mobileUrl = businessDict["mobile_url"] as String
+
+        var categoriesArray = businessDict["categories"] as? [NSArray]
+        var categories = categoriesArray?.map({
+            (categoryArray: NSArray) -> YelpCategory in
+            YelpCategory(categoryArray: categoryArray)
+        })
+        self.categories = categories
+        self.rating = businessDict["rating"] as? Int
+        self.reviewCount = businessDict["review_count"] as? Int
+    }
+    
+    func getCategoriesAsString() -> String {
+        let categoryStrings = self.categories.map({
+            (category: YelpCategory) -> String in
+            category.categoryName
+        })
+        let strValue = ", ".join(categoryStrings)
+        return strValue
     }
 
     class func searchWithQuery(query: String, callback: ([YelpBusinessResult]!, NSError!) -> Void) {
