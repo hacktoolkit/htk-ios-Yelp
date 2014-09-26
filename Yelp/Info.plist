@@ -26,6 +26,14 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>YELP_API_CONSUMER_KEY</key>
+	<string>$(YELP_API_CONSUMER_KEY)</string>
+	<key>YELP_API_CONSUMER_SECRET</key>
+	<string>$(YELP_API_CONSUMER_SECRET)</string>
+	<key>YELP_API_TOKEN</key>
+	<string>$(YELP_API_TOKEN)</string>
+	<key>YELP_API_TOKEN_SECRET</key>
+	<string>$(YELP_API_TOKEN_SECRET)</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
