@@ -2,7 +2,7 @@
 //  FilterCell.swift
 //  Yelp
 //
-//  Created by Jonathan Tsai on 9/24/14.
+//  Created by Jonathan Tsai on 9/26/14.
 //  Copyright (c) 2014 Hacktoolkit. All rights reserved.
 //
 
@@ -10,16 +10,9 @@ import UIKit
 
 class FilterCell: UITableViewCell {
 
-    @IBOutlet weak var someLabel: UILabel!
-
-    var name: String! {
-        willSet(newValue) {
-            someLabel.text = newValue
-        }
-
-        didSet(oldValue) {
-        }
-    }
+    var filterSection: FilterSection!
+    var rowNum: Int!
+    var sectionExpanded: Bool!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,4 +25,7 @@ class FilterCell: UITableViewCell {
         // Configure the view for the selected state
     }
 
+    func render() {
+        
+    }
 }

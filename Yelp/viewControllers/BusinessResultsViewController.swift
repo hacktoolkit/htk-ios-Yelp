@@ -15,7 +15,12 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var businessSearchBar: UISearchBar!
 
-    var businesses: [YelpBusinessResult]! = []
+    let RESULTS_PAGE_SIZE = 20
+    let INFINITE_SCROLL_THRESHOLD = 5
+
+    var businesses = [YelpBusinessResult]()
+    var currentPage = 1
+    var currentSearchQuery = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +28,7 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 100;
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -31,6 +37,12 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        if ((currentPage * RESULTS_PAGE_SIZE) - indexPath.row == INFINITE_SCROLL_THRESHOLD) {
+            dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_LOW, 0), {
+                self.currentPage += 1
+                self.doSearch()
+            })
+        }
         var businessResultCell = tableView.dequeueReusableCellWithIdentifier("BusinessResultCell") as BusinessResultCell
         let business = businesses[indexPath.row]
         businessResultCell.resultNum = indexPath.row + 1
@@ -64,10 +76,16 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
     }
 
     func searchTermDidChange(query: String) {
-        YelpBusinessResult.searchWithQuery(query, {
+        self.businesses = [YelpBusinessResult]()
+        self.currentSearchQuery = query
+        doSearch()
+    }
+
+    func doSearch() {
+        YelpBusinessResult.searchWithQuery(self.currentSearchQuery, {
             (businesses: [YelpBusinessResult]!, error: NSError!) -> Void in
             if businesses != nil {
-                self.businesses = businesses
+                self.businesses.extend(businesses)
                 self.tableView.reloadData()
             }
             if error != nil {

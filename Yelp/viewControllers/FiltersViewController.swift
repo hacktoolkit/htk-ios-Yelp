@@ -19,39 +19,31 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     @IBOutlet weak var tableView: UITableView!
 
     var data: [String]!
-    var sections = [
-        "Price",
-        "Most Popular",
-        "Distance",
-        "Sort by",
-        "General Features"
-    ]
     var sectionsExpanded = [Int:Bool]()
-    let DEFAULT_IS_EXPANDED = false
-    
+    let SECTION_HEADER_HEIGHT = 30
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        data = [
-            "Jon",
-            "Tim",
-            "Sam",
-            "Deepak",
-            "Jimmy",
-            "Darrel",
-            "Jonah"
-        ]
         self.tableView.reloadData()
+        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.estimatedRowHeight = 50;
+    }
+
+    func getFilterSection(section: Int) -> FilterSection {
+        var filterSection = FILTER_SECTIONS[section]
+        return filterSection
     }
 
     func isSectionExpanded(section: Int) -> Bool {
         var isExpanded: Bool
+        var filterSection = getFilterSection(section)
         if let sectionIsExpanded = self.sectionsExpanded[section] {
             isExpanded = sectionIsExpanded
         } else {
-            sectionsExpanded[section] = DEFAULT_IS_EXPANDED
+            sectionsExpanded[section] = !filterSection.collapsible
             isExpanded = sectionsExpanded[section]!
         }
         return isExpanded
@@ -63,28 +55,53 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var numRows = isSectionExpanded(section) ? data.count : 1
+        var filterSection = getFilterSection(section)
+        var numRows: Int
+        if filterSection.filterType == FilterType.Segmented {
+            numRows = 1
+        } else if filterSection.collapsible && !isSectionExpanded(section) {
+            numRows = filterSection.numRowsCollapsedDisplay
+        } else {
+            numRows = filterSection.options.count
+        }
+
         return numRows
     }
 
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
-        var numSections = self.sections.count
+        var numSections = FILTER_SECTIONS.count
         return numSections
     }
 
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var filterCell = tableView.dequeueReusableCellWithIdentifier("FilterCell") as FilterCell
-        var name = data[indexPath.row]
-        filterCell.name = name
+        var filterCell: FilterCell
+
+        var section = indexPath.section
+        var filterSection = getFilterSection(section)
+        switch filterSection.filterType {
+        case .Segmented:
+            filterCell = tableView.dequeueReusableCellWithIdentifier("SegmentedFilterCell") as SegmentedFilterCell
+        case .Switch:
+            filterCell = tableView.dequeueReusableCellWithIdentifier("SwitchFilterCell") as SwitchFilterCell
+        case .Select:
+            filterCell = tableView.dequeueReusableCellWithIdentifier("SelectFilterCell") as SelectFilterCell
+        }
+
+        filterCell.filterSection = filterSection
+        filterCell.rowNum = indexPath.row
+        filterCell.sectionExpanded = isSectionExpanded(section)
+        filterCell.render()
+
         return filterCell
     }
 
     func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        var headerView = UIView(frame: CGRect(x: 0, y:0, width: 320, height: 50))
+        var filterSection = getFilterSection(section)
+        var headerView = UIView(frame: CGRect(x: 0, y:0, width: 320, height: SECTION_HEADER_HEIGHT))
         headerView.backgroundColor = UIColor(white: 0.8, alpha: 0.8)
 
-        var headerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 320, height: 50))
-        headerLabel.text = "\(self.sections[section])"
+        var headerLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 320, height: SECTION_HEADER_HEIGHT))
+        headerLabel.text = "     \(filterSection.name)"
 
         headerView.addSubview(headerLabel)
 
@@ -92,12 +109,24 @@ class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 50
+        return CGFloat(SECTION_HEADER_HEIGHT)
     }
 
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
-        toggleSectionExpanded(indexPath.section)
+        var section = indexPath.section
+        var filterSection = getFilterSection(section)
+        if filterSection.collapsible {
+            if filterSection.filterType == FilterType.Select {
+                filterSection.selectOption(indexPath.row)
+            }
+            toggleSectionExpanded(indexPath.section)
+        }
+
+        if filterSection.filterType == FilterType.Switch {
+            var switchFilterCell = self.tableView(tableView, cellForRowAtIndexPath: indexPath) as SwitchFilterCell
+            switchFilterCell.onFilterSwitchFlipped(self)
+        }
     }
 
     override func didReceiveMemoryWarning() {
