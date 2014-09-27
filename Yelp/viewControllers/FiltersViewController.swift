@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FiltersViewControllerDelegate {
-    func searchTermDidChange()
+    func searchTermDidChange(String)
 }
 
 class FiltersViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {

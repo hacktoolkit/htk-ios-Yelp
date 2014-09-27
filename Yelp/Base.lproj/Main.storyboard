@@ -138,6 +138,9 @@
                                 <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="Mcr-7x-2od">
                                     <rect key="frame" x="0.0" y="0.0" width="298" height="33"/>
                                     <textInputTraits key="textInputTraits"/>
+                                    <connections>
+                                        <outlet property="delegate" destination="JA8-xm-v8w" id="2A7-fd-oih"/>
+                                    </connections>
                                 </searchBar>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -150,6 +153,7 @@
                         </view>
                     </navigationItem>
                     <connections>
+                        <outlet property="businessSearchBar" destination="Mcr-7x-2od" id="X5s-yA-GrT"/>
                         <outlet property="filterBarButtonItem" destination="XGh-EN-9vU" id="Dtx-U1-66q"/>
                         <outlet property="tableView" destination="hVK-7z-n3i" id="dW7-Ea-y3V"/>
                     </connections>

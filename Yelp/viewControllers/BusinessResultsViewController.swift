@@ -8,11 +8,12 @@
 
 import UIKit
 
-class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate {
+class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
     var yelpClient: YelpClient!
 
     @IBOutlet weak var filterBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var businessSearchBar: UISearchBar!
 
     var businesses: [YelpBusinessResult]! = []
 
@@ -22,9 +23,6 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.tableView.rowHeight = UITableViewAutomaticDimension
-
-        self.searchDisplayController?.displaysSearchBarInNavigationBar = true
-        searchTermDidChange()
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -60,8 +58,13 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
         filtersViewController.delegate = self
     }
 
-    func searchTermDidChange() {
-        YelpBusinessResult.searchWithQuery("Thai", {
+    // UISearchBarDelegate
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        searchTermDidChange(searchText)
+    }
+
+    func searchTermDidChange(query: String) {
+        YelpBusinessResult.searchWithQuery(query, {
             (businesses: [YelpBusinessResult]!, error: NSError!) -> Void in
             if businesses != nil {
                 self.businesses = businesses

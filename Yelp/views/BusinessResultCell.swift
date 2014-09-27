@@ -27,8 +27,10 @@ class BusinessResultCell: UITableViewCell {
             self.thumbnailImageView.layer.cornerRadius = 5
             self.thumbnailImageView.clipsToBounds = true
 
-            ImageUtils.sharedInstance.displayImageUrl(newBusiness.imageUrl, imageView: self.thumbnailImageView)
-            ImageUtils.sharedInstance.displayImageUrl(newBusiness.ratingImageUrl, imageView: self.ratingImageView)
+            if newBusiness.imageUrl != nil {
+                HTKImageUtils.sharedInstance.displayImageUrl(newBusiness.imageUrl, imageView: self.thumbnailImageView)
+            }
+            HTKImageUtils.sharedInstance.displayImageUrl(newBusiness.ratingImageUrl, imageView: self.ratingImageView)
 
             self.reviewCountLabel.text = "\(newBusiness.reviewCount) Review" + (newBusiness.reviewCount == 1 ? "" : "s")
             self.categoryLabel.text = newBusiness.getCategoriesAsString()
