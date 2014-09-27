@@ -11,8 +11,8 @@ import UIKit
 class BusinessResultCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var thumbnailImage: UIImageView!
-    @IBOutlet weak var ratingLabel: UILabel!
+    @IBOutlet weak var thumbnailImageView: UIImageView!
+    @IBOutlet weak var ratingImageView: UIImageView!
     @IBOutlet weak var reviewCountLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
     @IBOutlet weak var categoryLabel: UILabel!
@@ -22,8 +22,16 @@ class BusinessResultCell: UITableViewCell {
     var business: YelpBusinessResult! {
         willSet(newBusiness) {
             self.nameLabel.text = "\(resultNum). \(newBusiness.name)"
-            ImageUtils.sharedInstance.displayImageUrl(newBusiness.imageUrl, imageView: self.thumbnailImage)
-            self.ratingLabel.text = "\(newBusiness.rating) Stars"
+
+            // rounded corners for thumbnail image
+            self.thumbnailImageView.layer.cornerRadius = 5
+            self.thumbnailImageView.clipsToBounds = true
+
+            if newBusiness.imageUrl != nil {
+                HTKImageUtils.sharedInstance.displayImageUrl(newBusiness.imageUrl, imageView: self.thumbnailImageView)
+            }
+            HTKImageUtils.sharedInstance.displayImageUrl(newBusiness.ratingImageUrl, imageView: self.ratingImageView)
+
             self.reviewCountLabel.text = "\(newBusiness.reviewCount) Review" + (newBusiness.reviewCount == 1 ? "" : "s")
             self.categoryLabel.text = newBusiness.getCategoriesAsString()
         }
