@@ -302,6 +302,7 @@
 		5600948119D11CEB006674D6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = com.hacktoolkit.;
 				LastUpgradeCheck = 0600;
 				ORGANIZATIONNAME = Hacktoolkit;
 				TargetAttributes = {

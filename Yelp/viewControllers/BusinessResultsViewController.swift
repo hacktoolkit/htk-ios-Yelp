@@ -11,6 +11,7 @@ import UIKit
 class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate {
     var yelpClient: YelpClient!
 
+    @IBOutlet weak var filterBarButtonItem: UIBarButtonItem!
     @IBOutlet weak var tableView: UITableView!
 
     var businesses: [YelpBusinessResult]! = []
@@ -20,7 +21,7 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
         // Do any additional setup after loading the view, typically from a nib.
         self.tableView.delegate = self
         self.tableView.dataSource = self
-//        self.tableView.rowHeight = UITableViewAutomaticDimension
+        self.tableView.rowHeight = UITableViewAutomaticDimension
 
         self.searchDisplayController?.displaysSearchBarInNavigationBar = true
         searchTermDidChange()
@@ -38,7 +39,15 @@ class BusinessResultsViewController: UIViewController, UITableViewDelegate, UITa
         businessResultCell.business = business
         return businessResultCell
     }
-    
+
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        var businessResultCell = self.tableView(tableView, cellForRowAtIndexPath: indexPath)
+        businessResultCell.layoutIfNeeded()
+        var size = businessResultCell.contentView.systemLayoutSizeFittingSize(UILayoutFittingCompressedSize)
+        var height = size.height + 1
+        return height
+    }
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
