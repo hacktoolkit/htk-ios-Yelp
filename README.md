@@ -9,7 +9,7 @@ This is a basic Yelp client.
 
 Here's an animated GIF (made with [LiceCAP](http://www.cockos.com/licecap/)) of what it looks like:
 
-![](https://raw.githubusercontent.com/hacktoolkit/htk-ios-Yelp/master/yelp_screencap_jontsai_20140923.gif)
+![](https://raw.githubusercontent.com/hacktoolkit/htk-ios-Yelp/master/yelp_screencap_20140927.gif)
 
 ## Download and Build Instructions
 
@@ -25,7 +25,7 @@ Here's an animated GIF (made with [LiceCAP](http://www.cockos.com/licecap/)) of 
 
 ## Features (User Stories)
 
-Time spent: 17 hours
+Time spent: 19 hours
 
 **Search results page**
 
